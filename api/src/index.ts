@@ -5,11 +5,13 @@ import { cors } from "hono/cors";
 import { z } from "zod";
 import { loadEnv } from "./env.js";
 import { createPool } from "./db.js";
+import { runMigrations } from "./migrate.js";
 import { enrichExistingGamesFromRawg, syncTopRawgGames } from "./rawg.js";
 import { rebuildGameTags } from "./gameTags.js";
 
 const env = loadEnv();
 const pool = createPool(env);
+await runMigrations(pool);
 
 const app = new Hono();
 
